@@ -1,0 +1,39 @@
+{
+"images": ["fly_sprint.png"],
+"frames": [
+
+    [2, 2, 108, 100], 
+    [112, 2, 116, 94], 
+    [230, 2, 120, 104], 
+    [352, 2, 121, 106], 
+    [475, 2, 123, 106], 
+    [600, 2, 123, 101], 
+    [725, 2, 119, 93], 
+    [846, 2, 114, 93], 
+    [962, 2, 107, 101], 
+    [1071, 2, 102, 105], 
+    [1175, 2, 99, 106], 
+    [1276, 2, 99, 109], 
+    [1377, 2, 101, 108]
+],
+"animations": {
+    
+        "move1":[0], 
+        "move2":[1], 
+        "move3":[2], 
+        "move4":[3], 
+        "move5":[4], 
+        "move6":[5], 
+        "move7":[6], 
+        "move8":[7], 
+        "move9":[8], 
+        "move91":[9], 
+        "move92":[10], 
+        "move93":[11], 
+        "move94":[12]
+},
+"texturepacker": [
+        "SmartUpdateHash: $TexturePacker:SmartUpdate:0eb0c78348bad41531f80836cf43095f:b5dddcfe889d3dc90bfe301c1510cdf2:3ff5bb214e2c06640da544e7bb3be78e$",
+        "Created with TexturePacker (http://www.texturepacker.com) for EaselJS"
+]
+}
