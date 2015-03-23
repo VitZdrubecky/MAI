@@ -47,10 +47,10 @@ window.onload = function()
                 [1340, 2, 163, 140], 
                 [1505, 2, 163, 140], 
                 [1670, 2, 155, 140], 
-                [1827, 2, 155, 140], 
+                [1824, 2, 150, 140], 
             ],
             "animations": {
-                "flap": [11, 12], 
+                "flap": [0, 12], 
             },
         }
     spriteSheet = new createjs.SpriteSheet(spriteConfig);
@@ -65,7 +65,7 @@ window.onload = function()
 
     
     // Add ticker
-    createjs.Ticker.setFPS(1);
+    createjs.Ticker.setFPS(15);
     createjs.Ticker.addEventListener('tick', stage);
 
 }
@@ -73,7 +73,7 @@ window.onload = function()
 function queueLoaded(event) {
     image = new Image();
     image.src = "./assets/ptaci/playground-moorhuhn.svg";
-    //image.onload = handleLoad;
+    image.onload = handleLoad;
 }
 
 function handleLoad() {
