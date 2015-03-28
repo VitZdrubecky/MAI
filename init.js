@@ -13,8 +13,8 @@ window.onload = function()
      */
     var canvas = document.getElementById('myCanvas');
     context = canvas.getContext('2d');
-    context.canvas.width = WIDTH;
-    context.canvas.height = HEIGHT;
+    context.canvas.width = WIDTH * 2;
+    context.canvas.height = HEIGHT * 2;
     stage = new createjs.Stage("myCanvas");
 
     // Add background image
@@ -58,12 +58,13 @@ function createAnimation(spriteConfig, x, y, scaleX, scaleY, animation) {
 function queueLoaded(event) {
     image = new Image();
     image.src = "./assets/background/playground-moorhuhn.svg";
-    //image.onload = handleLoad;
+    image.onload = handleLoad;
 }
 
 function handleLoad() {
     var backgroundImage = new createjs.Bitmap(image);
-    backgroundImage.scaleX = 1.0;
-    backgroundImage.scaleY = 1.0;
+    //backgroundImage.scaleX = 1.0;
+    //backgroundImage.scaleY = 1.0;
+    backgroundImage.cache(0, 0, WIDTH, HEIGHT);
     stage.addChildAt(backgroundImage);
 }
