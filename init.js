@@ -60,6 +60,7 @@ function handleBackgroundImageLoad() {
     var backgroundImage = new createjs.Bitmap(image);
     //backgroundImage.scaleX = 1.0;
     //backgroundImage.scaleY = 1.0;
+    backgroundImage.set({alpha: 0.85});
     backgroundImage.cache(0, 0, WIDTH, HEIGHT /*[, possibleScale]*/);
     stage.addChildAt(backgroundImage);
 }
