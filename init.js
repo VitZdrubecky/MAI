@@ -26,36 +26,14 @@ window.onload = function()
 
 
     queue.loadManifest([
-        {id: 'backgroundImage', src: './assets/ptaci/playground-moorhuhn.svg'},
+        {id: 'backgroundImage', src: './assets/background/playground-moorhuhn.svg'},
     ]);
     queue.load();
     
-    // Create bat spritesheet
-    var spriteFlyRightConfig = 
-        {
-            "images": ["./assets/fly_sprint_left_to_right.svg"],
-            "frames": [
-                [2, 2, 135, 143], 
-                [139, 2, 135, 143],
-                [276, 2, 133, 143], 
-                [411, 2, 136, 140], 
-                [549, 2, 145, 140], 
-                [696, 2, 148, 140], 
-                [846, 2, 160, 140],
-                [1008, 2, 163, 140],
-                [1173, 2, 168, 140], 
-                [1340, 2, 163, 140], 
-                [1505, 2, 163, 140], 
-                [1670, 2, 155, 140], 
-                [1824, 2, 150, 140], 
-            ],
-            "animations": {
-                "flapRight": [0, 12], 
-            },
-        }
-
+    // Create moorhuhn right spritesheet
+    var spriteFlyRightConfig = getFlyRightSpriteConfig();
     spriteFlyRight = new createjs.SpriteSheet(spriteFlyRightConfig);
-    
+    // Create animation
     animFlyRight = new createjs.Sprite(spriteFlyRight, "flap");
     animFlyRight.regX = 99;
     animFlyRight.regY = 58;
@@ -64,32 +42,10 @@ window.onload = function()
     animFlyRight.gotoAndPlay("flapRight");
     stage.addChildAt(animFlyRight);
 
-    // Create bat spritesheet
-    var spriteFlyLeftConfig = 
-        {
-            "images": ["./assets/fly_sprint_right_to_left.svg"],
-            "frames": [
-                [2, 2, 135, 143], 
-                [139, 2, 135, 143],
-                [276, 2, 133, 143], 
-                [411, 2, 136, 140], 
-                [549, 2, 145, 140], 
-                [696, 2, 148, 140], 
-                [846, 2, 160, 140],
-                [1008, 2, 163, 140],
-                [1173, 2, 168, 140], 
-                [1340, 2, 163, 140], 
-                [1505, 2, 163, 140], 
-                [1670, 2, 155, 140], 
-                [1824, 2, 150, 140],  
-            ],
-            "animations": {
-                "flapLeft": [0, 12], 
-            },
-        }
-
+    // Create moorhuhn left spritesheet
+    var spriteFlyLeftConfig = getFlyLeftSpriteConfig();
     spriteFlyLeft = new createjs.SpriteSheet(spriteFlyLeftConfig);
-    
+    // Create animation
     animFlyLeft = new createjs.Sprite(spriteFlyLeft, "flap");
     animFlyLeft.regX = 99;
     animFlyLeft.regY = 58;
@@ -108,8 +64,8 @@ window.onload = function()
 
 function queueLoaded(event) {
     image = new Image();
-    image.src = "./assets/ptaci/playground-moorhuhn.svg";
-    image.onload = handleLoad;
+    image.src = "./assets/background/playground-moorhuhn.svg";
+    //image.onload = handleLoad;
 }
 
 function handleLoad() {
