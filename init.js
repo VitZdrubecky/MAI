@@ -1,26 +1,19 @@
 var context;
 var queue;
-var WIDTH = 1024;
-var HEIGHT = 768;
+var WIDTH = window.innerWidth;
+var HEIGHT = window.innerHeight;
 var stage;
 var image;
 
-window.onload = function()
-{
-    /*
-     *      Set up the Canvas with Size and height
-     *
-     */
+$(document).ready(function() { 
+    
+    // Inicialize canvas
     var canvas = document.getElementById('myCanvas');
     context = canvas.getContext('2d');
-    context.canvas.width = WIDTH * 2;
-    context.canvas.height = HEIGHT * 2;
+    context.canvas.width = WIDTH;
+    context.canvas.height = HEIGHT;
     stage = new createjs.Stage("myCanvas");
 
-    // Add background image
-    //image = new Image();
-    //image.src = "./assets/ptaci/playground-moorhuhn.svg";
-    //image.onload = handleLoad;
     queue = new createjs.LoadQueue(false);
     queue.on("complete", queueLoaded, this);
 
@@ -30,17 +23,11 @@ window.onload = function()
     ]);
     queue.load();
     
-    // Animations
-    createAnimation(getFlyRightSpriteConfig(), 200, 200, 1.0, 1.0, "flapLeft");
-    createAnimation(getFlyLeftSpriteConfig(), 400, 200, 0.8, 0.8, "flapRight");
-    createAnimation(getKillSpriteConfig(), 650, 200, 1.1, 1.1, "kill");
-    
-
     // Add ticker
     createjs.Ticker.setFPS(10);
     createjs.Ticker.addEventListener('tick', stage);
 
-}
+});
 
 function createAnimation(spriteConfig, x, y, scaleX, scaleY, animation) {
     // Create sprite
@@ -56,15 +43,23 @@ function createAnimation(spriteConfig, x, y, scaleX, scaleY, animation) {
 }
 
 function queueLoaded(event) {
+    // Loading background image
     image = new Image();
     image.src = "./assets/background/playground-moorhuhn.svg";
-    image.onload = handleLoad;
+    image.onload = handleBackgroundImageLoad;
+
+    //Loading animations
+    createAnimation(getFlyRightSpriteConfig(), 200, 200, 1.0, 1.0, "flapLeft");
+    createAnimation(getFlyLeftSpriteConfig(), 400, 200, 0.8, 0.8, "flapRight");
+    createAnimation(getKillSpriteConfig(), 650, 200, 1.1, 1.1, "kill");
+    
+
 }
 
-function handleLoad() {
+function handleBackgroundImageLoad() {
     var backgroundImage = new createjs.Bitmap(image);
     //backgroundImage.scaleX = 1.0;
     //backgroundImage.scaleY = 1.0;
-    backgroundImage.cache(0, 0, WIDTH, HEIGHT);
+    backgroundImage.cache(0, 0, WIDTH, HEIGHT /*[, possibleScale]*/);
     stage.addChildAt(backgroundImage);
 }
