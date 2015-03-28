@@ -31,10 +31,10 @@ window.onload = function()
     queue.load();
     
     // Create moorhuhn right spritesheet
-    var spriteFlyRightConfig = getFlyRightSpriteConfig();
-    spriteFlyRight = new createjs.SpriteSheet(spriteFlyRightConfig);
+    var flyRightSpriteConfig = getFlyRightSpriteConfig();
+    flyRightSprite = new createjs.SpriteSheet(flyRightSpriteConfig);
     // Create animation
-    animFlyRight = new createjs.Sprite(spriteFlyRight, "flap");
+    animFlyRight = new createjs.Sprite(flyRightSprite);
     animFlyRight.regX = 99;
     animFlyRight.regY = 58;
     animFlyRight.x = 200;
@@ -43,10 +43,10 @@ window.onload = function()
     stage.addChildAt(animFlyRight);
 
     // Create moorhuhn left spritesheet
-    var spriteFlyLeftConfig = getFlyLeftSpriteConfig();
-    spriteFlyLeft = new createjs.SpriteSheet(spriteFlyLeftConfig);
+    var flyLeftSpriteConfig = getFlyLeftSpriteConfig();
+    flyLeftSprite = new createjs.SpriteSheet(flyLeftSpriteConfig);
     // Create animation
-    animFlyLeft = new createjs.Sprite(spriteFlyLeft, "flap");
+    animFlyLeft = new createjs.Sprite(flyLeftSprite);
     animFlyLeft.regX = 99;
     animFlyLeft.regY = 58;
     animFlyLeft.x = 400;
@@ -54,10 +54,24 @@ window.onload = function()
     animFlyLeft.gotoAndPlay("flapLeft");
     stage.addChildAt(animFlyLeft);
 
+
+    // Create moorhuhn kill spritesheet
+    var killSpriteConfig = getKillSpriteConfig();
+    killSprite = new createjs.SpriteSheet(killSpriteConfig);
+    // Create animation
+    animKill = new createjs.Sprite(killSprite);
+    animKill.regX = 99;
+    animKill.regY = 58;
+    animKill.x = 800;
+    animKill.y = 200;
+    animKill.gotoAndPlay("kill");
+    stage.addChildAt(animKill);
+
+
     
 
     // Add ticker
-    createjs.Ticker.setFPS(15);
+    createjs.Ticker.setFPS(10);
     createjs.Ticker.addEventListener('tick', stage);
 
 }

@@ -47,6 +47,21 @@ function getFlyRightSpriteConfig() {
 }
 
 function getKillSpriteConfig() {
-
+    return {
+        "images": ["./assets/sprites/kill_sprint.svg"],
+        "frames": [
+            [2, 2, 140, 160], 
+            [144, 2, 130, 160], 
+            [276, 2, 135, 160], 
+            [413, 2, 160, 120], 
+            [575, 2, 135, 110], 
+            [712, 2, 110, 150], 
+            [824, 2, 105, 155], 
+            [931, 2, 105, 155]
+        ],
+        "animations": {
+            "kill": [0, 7],
+        }
+    }
 }
 
