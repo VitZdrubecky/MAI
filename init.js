@@ -6,8 +6,11 @@ var stage;
 var image;
 var target;
 
-//var moorhuhnX;
-//var moorhuhnY;
+var moorhuhnXPos = 0;
+var moorhuhnYPos = 200;
+var moorhuhnSpeed = 20;
+
+var enemies = {};
 
 $(document).ready(function() { 
     
@@ -30,24 +33,28 @@ $(document).ready(function() {
     // Add ticker
     createjs.Ticker.setFPS(10);
     createjs.Ticker.addEventListener('tick', stage);
+    
 
 });
 
 function queueLoaded(event) {
     // Loading background image
     backgroundImage = new Image();
-    backgroundImage.src = "./assets/background/playground-moorhuhn.svg";
+    backgroundImage.src = './assets/background/playground-moorhuhn.svg';
     backgroundImage.onload = handleBackgroundImageLoad;
 
     //Loading animations
-    createAnimation(getFlyRightSpriteConfig(), 200, 200, 1.0, 1.0, "flapLeft");
-    createAnimation(getFlyLeftSpriteConfig(), 400, 200, 0.8, 0.8, "flapRight");
-    createAnimation(getKillSpriteConfig(), 650, 200, 1.1, 1.1, "kill");
+    enemies['moorhuhn'] = {};
+    enemies['moorhuhn']['animation'] = createAnimation(getFlyRightSpriteConfig(), moorhuhnXPos, moorhuhnYPos, 1.0, 1.0, "flapRight");
+    enemies['moorhuhn']['direction'] = 'right';
+    //createAnimation(getFlyLeftSpriteConfig(), 400, 200, 0.8, 0.8, "flapLeft");
+    //createAnimation(getKillSpriteConfig(), 650, 200, 1.1, 1.1, "kill");
 
     targetImage = new Image();
     targetImage.src = "./assets/target.svg";
     targetImage.onload = handleTargetImageLoad;
     
+    createjs.Ticker.addEventListener('tick', tickEvent);
     window.onmousemove = handleMouseMove;
 
 }
@@ -62,7 +69,13 @@ function createAnimation(spriteConfig, x, y, scaleX, scaleY, animation) {
     animation.scaleX = scaleX;
     animation.scaleY = scaleY;
     animation.gotoAndPlay(animation);
-    stage.addChildAt(animation);
+    /**
+     * Moorhuhn should be always in front of the background and behind the target aim
+     * First case happens when moorhuhn is firstly loaded, second when replaced for one that flies in opossite direction
+     */
+    stage.addChildAt(animation, stage.getNumChildren() == 0 ? 0 : stage.getNumChildren() -1);
+    
+    return animation;
 }
 
 function handleBackgroundImageLoad() {
@@ -71,7 +84,7 @@ function handleBackgroundImageLoad() {
     //backgroundImage.scaleY = 1.0;
     background.set({alpha: 0.85});
     background.cache(0, 0, WIDTH, HEIGHT /*[, possibleScale]*/);
-    stage.addChildAt(background, 0);
+    stage.addChildAt(background);
 }
 
 function handleTargetImageLoad() {
@@ -80,12 +93,35 @@ function handleTargetImageLoad() {
     target.y = HEIGHT/2;
     target.scaleX = 0.15;
     target.scaleY = 0.15;
+    // Target aim should always be in the front of everything
     stage.addChildAt(target, stage.getNumChildren());
 }
 
-function handleMouseMove(event)
-{
+function handleMouseMove(event) {
     //Offset the position by 45 pixels so mouse is in center of crosshair
     target.x = event.clientX-45;
     target.y = event.clientY-45;
+}
+
+function tickEvent() {
+    // If moorhuhn flies out on the left side -> create right moorhuhn
+    if (moorhuhnXPos > WIDTH + 10) {
+        stage.removeChild(enemies['moorhuhn']['animation']);
+        enemies['moorhuhn']['animation'] = createAnimation(getFlyLeftSpriteConfig(), moorhuhnXPos, moorhuhnYPos, 0.8, 0.8, "flapLeft");
+        enemies['moorhuhn']['direction'] = 'left';
+    // If moorhuhn flies out on the right side -> create left moorhuhn    
+    } else if (moorhuhnXPos < -200) {
+        stage.removeChild(enemies['moorhuhn']['animation']);
+        enemies['moorhuhn']['animation'] = createAnimation(getFlyRightSpriteConfig(), moorhuhnXPos, moorhuhnYPos, 1.0, 1.0, "flapRight");
+        enemies['moorhuhn']['direction'] = 'right';
+    }
+    
+    // Move moorhuhn in the right direction
+    if (enemies['moorhuhn']['direction'] == 'left') {
+        moorhuhnXPos -= moorhuhnSpeed;
+    } else {
+        moorhuhnXPos += moorhuhnSpeed;
+    }
+    
+    enemies['moorhuhn']['animation'].x = moorhuhnXPos;
 }
