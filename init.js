@@ -30,50 +30,29 @@ window.onload = function()
     ]);
     queue.load();
     
-    // Create moorhuhn right spritesheet
-    var flyRightSpriteConfig = getFlyRightSpriteConfig();
-    flyRightSprite = new createjs.SpriteSheet(flyRightSpriteConfig);
-    // Create animation
-    animFlyRight = new createjs.Sprite(flyRightSprite);
-    animFlyRight.regX = 99;
-    animFlyRight.regY = 58;
-    animFlyRight.x = 200;
-    animFlyRight.y = 200;
-    animFlyRight.gotoAndPlay("flapRight");
-    stage.addChildAt(animFlyRight);
-
-    // Create moorhuhn left spritesheet
-    var flyLeftSpriteConfig = getFlyLeftSpriteConfig();
-    flyLeftSprite = new createjs.SpriteSheet(flyLeftSpriteConfig);
-    // Create animation
-    animFlyLeft = new createjs.Sprite(flyLeftSprite);
-    animFlyLeft.regX = 99;
-    animFlyLeft.regY = 58;
-    animFlyLeft.x = 400;
-    animFlyLeft.y = 200;
-    animFlyLeft.gotoAndPlay("flapLeft");
-    stage.addChildAt(animFlyLeft);
-
-
-    // Create moorhuhn kill spritesheet
-    var killSpriteConfig = getKillSpriteConfig();
-    killSprite = new createjs.SpriteSheet(killSpriteConfig);
-    // Create animation
-    animKill = new createjs.Sprite(killSprite);
-    animKill.regX = 99;
-    animKill.regY = 58;
-    animKill.x = 800;
-    animKill.y = 200;
-    animKill.gotoAndPlay("kill");
-    stage.addChildAt(animKill);
-
-
+    // Animations
+    createAnimation(getFlyRightSpriteConfig(), 200, 200, 1.0, 1.0, "flapLeft");
+    createAnimation(getFlyLeftSpriteConfig(), 400, 200, 0.8, 0.8, "flapRight");
+    createAnimation(getKillSpriteConfig(), 650, 200, 1.1, 1.1, "kill");
     
 
     // Add ticker
     createjs.Ticker.setFPS(10);
     createjs.Ticker.addEventListener('tick', stage);
 
+}
+
+function createAnimation(spriteConfig, x, y, scaleX, scaleY, animation) {
+    // Create sprite
+    sprite = new createjs.SpriteSheet(spriteConfig);
+    // Create animation
+    animation = new createjs.Sprite(sprite);
+    animation.x = x;
+    animation.y = y;
+    animation.scaleX = scaleX;
+    animation.scaleY = scaleY;
+    animation.gotoAndPlay(animation);
+    stage.addChildAt(animation);
 }
 
 function queueLoaded(event) {
