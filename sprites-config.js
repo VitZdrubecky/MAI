@@ -60,7 +60,7 @@ function getKillSpriteConfig() {
             [931, 2, 100, 155]
         ],
         "animations": {
-            "kill": [0, 7],
+            "kill": [0, 7, false, 1],
         }
     }
 }
