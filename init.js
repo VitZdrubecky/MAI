@@ -3,7 +3,8 @@ var queue;
 var WIDTH = window.innerWidth;
 var HEIGHT = window.innerHeight;
 var stage;
-var image;
+var backgroundImage;
+var targetImage;
 var target;
 
 var moorhuhnXPos = 0;
@@ -11,10 +12,9 @@ var moorhuhnYPos = 200;
 var moorhuhnSpeed = 20;
 var moorhuhnScale = 1.0;
 
-var enemies = {};
+var moorhuhn = {};
 
 $(document).ready(function() { 
-    
     // Inicialize canvas
     var canvas = document.getElementById('myCanvas');
     context = canvas.getContext('2d');
@@ -25,7 +25,6 @@ $(document).ready(function() {
     queue = new createjs.LoadQueue(false);
     queue.installPlugin(createjs.Sound);
     queue.on("complete", queueLoaded, this);
-
 
     queue.loadManifest([
         {id: 'backgroundImage', src: './assets/background/playground-moorhuhn.svg'},
@@ -39,8 +38,6 @@ $(document).ready(function() {
     // Add ticker
     createjs.Ticker.setFPS(10);
     createjs.Ticker.addEventListener('tick', stage);
-    
-
 });
 
 function queueLoaded(event) {
@@ -50,9 +47,8 @@ function queueLoaded(event) {
     backgroundImage.onload = handleBackgroundImageLoad;
 
     //Loading animations
-    enemies['moorhuhn'] = {};
-    enemies['moorhuhn']['animation'] = createAnimation(getFlyRightSpriteConfig(), 0, 200, moorhuhnScale, moorhuhnScale, "flapRight");
-    enemies['moorhuhn']['direction'] = 'right';
+    moorhuhn.animation = createAnimation(getFlyRightSpriteConfig(), 0, 200, moorhuhnScale, moorhuhnScale, "flapRight");
+    moorhuhn.direction = 'right';
     //createAnimation(getFlyLeftSpriteConfig(), 400, 200, 0.8, 0.8, "flapLeft");
     //createAnimation(getKillSpriteConfig(), 650, 200, 1.1, 1.1, "kill");
 
@@ -115,12 +111,12 @@ function handleMouseMove(event) {
 function handleMouseDown(event) {
     createjs.Sound.play("shot");
 
-    if (enemies['moorhuhn']) {
+    if (moorhuhn) {
         //Obtain Shot position
         var shotX = Math.round(event.clientX);
         var shotY = Math.round(event.clientY);
-        var spriteX = Math.round(enemies['moorhuhn']['animation'].x);
-        var spriteY = Math.round(enemies['moorhuhn']['animation'].y);
+        var spriteX = Math.round(moorhuhn.animation.x);
+        var spriteY = Math.round(moorhuhn.animation.y);
 
         //alert(shotX + " " + shotY + " " + spriteX + " " + spriteY);
         // Compute the X and Y distance using absolte value
@@ -130,8 +126,8 @@ function handleMouseDown(event) {
         if (distX < moorhuhnScale * 120 && distY < moorhuhnScale * 120)
         {
             //Hit
-            stage.removeChild(enemies['moorhuhn']['animation']);
-            enemies['moorhuhn']['animation'] = null;
+            stage.removeChild(moorhuhn.animation);
+            moorhuhn.animation = null;
             animation = createAnimation(getKillSpriteConfig(), spriteX, spriteY, moorhuhnScale, moorhuhnScale, "kill");
             animation.on("animationend", function() {
                 stage.removeChild(animation);
@@ -146,9 +142,9 @@ function handleMouseDown(event) {
             moorhuhnScale       = getRandom1decimal(0.2, 1.0);
 
             setTimeout(function() {
-                enemies['moorhuhn']['animation'] = createAnimation(flyDirection == 0 ? getFlyRightSpriteConfig() : getFlyLeftSpriteConfig(), 
+                moorhuhn.animation = createAnimation(flyDirection == 0 ? getFlyRightSpriteConfig() : getFlyLeftSpriteConfig(), 
                    spriteX, spriteY, moorhuhnScale, moorhuhnScale, flyDirection == 0 ? "flapRight" : "flapLeft");
-                enemies['moorhuhn']['direction'] = flyDirection == 0 ? 'right' : 'left';
+                moorhuhn.direction = flyDirection == 0 ? 'right' : 'left';
             }, timeToCreate);
 
         }
@@ -156,30 +152,30 @@ function handleMouseDown(event) {
 }
 
 function tickEvent() {
-    if (enemies['moorhuhn']['animation']) { 
+    if (moorhuhn.animation) { 
         // If moorhuhn flies out on the left side -> create right moorhuhn
-        if (enemies['moorhuhn']['animation'].x > WIDTH + 10) {
-            stage.removeChild(enemies['moorhuhn']['animation']);
-            enemies['moorhuhn']['animation'] = createAnimation(getFlyLeftSpriteConfig(), 
-                enemies['moorhuhn']['animation'].x, enemies['moorhuhn']['animation'].y, moorhuhnScale - 0.2, moorhuhnScale - 0.2, "flapLeft");
-            enemies['moorhuhn']['direction'] = 'left';
+        if (moorhuhn.animation.x > WIDTH + 10) {
+            stage.removeChild(moorhuhn.animation);
+            moorhuhn.animation = createAnimation(getFlyLeftSpriteConfig(), 
+                moorhuhn.animation.x, moorhuhn.animation.y, moorhuhnScale - 0.2, moorhuhnScale - 0.2, "flapLeft");
+            moorhuhn.direction = 'left';
         // If moorhuhn flies out on the right side -> create left moorhuhn    
-        } else if (enemies['moorhuhn']['animation'].x < -200) {
-            stage.removeChild(enemies['moorhuhn']['animation']);
-            enemies['moorhuhn']['animation'] = createAnimation(getFlyRightSpriteConfig(), 
-                enemies['moorhuhn']['animation'].x, enemies['moorhuhn']['animation'].y, moorhuhnScale, moorhuhnScale, "flapRight");
-            enemies['moorhuhn']['direction'] = 'right';
+        } else if (moorhuhn.animation.x < -200) {
+            stage.removeChild(moorhuhn.animation);
+            moorhuhn.animation = createAnimation(getFlyRightSpriteConfig(), 
+                moorhuhn.animation.x, moorhuhn.animation.y, moorhuhnScale, moorhuhnScale, "flapRight");
+            moorhuhn.direction = 'right';
         }
     
         // Move moorhuhn in the right direction
-        if (enemies['moorhuhn']['direction'] == 'left') {
-            enemies['moorhuhn']['animation'].x -= moorhuhnScale * 50;
+        if (moorhuhn.direction == 'left') {
+            moorhuhn.animation.x -= moorhuhnScale * 50;
         } else {
-            enemies['moorhuhn']['animation'].x += moorhuhnScale * 50;
+            moorhuhn.animation.x += moorhuhnScale * 50;
         }
     }
     
-    //enemies['moorhuhn']['animation'].x = moorhuhnXPos;
+    //moorhuhn.animation.x = moorhuhnXPos;
 }
 
 function getRandom0or1() {
