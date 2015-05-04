@@ -96,7 +96,7 @@ var moorhuhn = SAGE2_App.extend({
 		this.maxSpawnScale  = 1.0;
 
 		// initial game time and timer updating function
-		this.gameTime = 100;
+		this.gameTime = 60;
 		var self      = this;
 		this.gameTimer = setInterval(function () {
 			self.gameTime -= 1;
@@ -146,10 +146,25 @@ var moorhuhn = SAGE2_App.extend({
 		this.maxSpawnCoordY = this.areaHeight - 30;
 
 		// this.background.clear();
-		// this.background.set({x: this.areaWidth, y: this.areaHeight});
+		this.stage.removeChild(this.background);
+		this.backgroundImage        = new Image();
+	    this.backgroundImage.src    = '/uploads/assets/moorhuhn/background/playground-moorhuhn.svg';
+	    this.backgroundImage.onload = this.handleBackgroundImageLoad(this, true);
+
+	    var scaleX = (this.areaWidth / 1280);
+	    var scaleY = (this.areaHeight / 720);
+	    this.background.scaleX = scaleX;
+	    this.background.scaleY = scaleY;
+	    console.log('scaleX: ' + scaleX);
+	    console.log('scaleY: ' + scaleY);
+	    console.log('this.areaWidth * scaleX: ' + this.areaWidth * scaleX);
+	    console.log('this.areaHeight * scaleY: ' + this.areaHeight * scaleY);
+	    console.log('this.background.getBounds().width: ' + this.background.getBounds().width);
+	    console.log('this.background.getBounds().height: ' + this.background.getBounds().height);
+	    this.background.cache(0, 0, 1280, 720);
 		// this.background.scaleX *= this.areaWidth / this.areaHeight;
 		// this.background.scaleY *= this.areaWidth / this.areaHeight;
-	    this.background.cache(0, 0, this.areaWidth, this.areaHeight);
+	    // this.background.cache(0, 0, this.areaWidth * scaleX, this.areaHeight * scaleY);
 		// this.background.updateCache();
 
 		this.refresh(date);
@@ -248,8 +263,16 @@ var moorhuhn = SAGE2_App.extend({
 
 	    // load both static images
 	    this.backgroundImage        = new Image();
-	    this.backgroundImage.src    = '/uploads/assets/moorhuhn/background/playground-moorhuhn.svg';
-	    this.backgroundImage.onload = this.handleBackgroundImageLoad(this);
+	    this.backgroundImage.src    = '/uploads/assets/moorhuhn/background/playground-moorhuhn.png';
+	    this.backgroundImage.onload = this.handleBackgroundImageLoad(this, false);
+	    // console.log(this.stage.getBounds());
+	    // this.background = new createjs.Bitmap('/uploads/assets/moorhuhn/background/playground-moorhuhn.png');
+	    // // var scaleX = (this.areaWidth / 1280);
+	    // // var scaleY = (this.areaHeight / 720);
+	    // // this.background.scaleX = scaleX;
+	    // // this.background.scaleY = scaleY;
+	    // this.stage.addChild(this.background);
+	    // this.background.cache(0, 0, -100, -100);
 
 	    this.targetImage            = new Image();
 	    this.targetImage.src        = '/uploads/assets/moorhuhn/target.svg';
@@ -327,17 +350,26 @@ var moorhuhn = SAGE2_App.extend({
 	     */
 	    this.stage.addChildAt(animation, this.stage.getNumChildren() == 0 ? 0 : this.stage.getNumChildren() - 1);
 
-		console.log('A new moorhuhn animation succesfully appended');
+		// console.log('A new moorhuhn animation succesfully appended');
 	    return animation;
 	},
 
 	// a callback function to rasterize, transparate, cache and append the background image 
-	handleBackgroundImageLoad: function (instance) {
+	handleBackgroundImageLoad: function (instance, cache) {
 	    instance.background = new createjs.Bitmap(instance.backgroundImage);
-	    instance.background.set({alpha: 0.85});
-	    // instance.background.set({x: instance.areaWidth, y: instance.areaHeight, alpha: 0.85});
-	    instance.background.cache(0, 0, instance.areaWidth, instance.areaHeight);
-	    instance.stage.addChild(instance.background);
+	    // instance.stage.canvas.width = instance.areaWidth;
+	    // instance.stage.canvas.height = instance.areaHeight;
+	    
+	    var scaleX = (instance.areaWidth / 1280);
+	    var scaleY = (instance.areaHeight / 720);
+	    instance.background.scaleX = scaleX;
+	    instance.background.scaleY = scaleY;
+	    // instance.background.set({alpha: 0.85});
+	    // this.background.cache(-100, -100, this.areaWidth, this.areaHeight);
+	    if (cache)
+	    	instance.background.cache(0, 0, 1280, 720);
+
+	    instance.stage.addChildAt(instance.background, 0);
 
 		console.log('Background succesfully appended');
 	},

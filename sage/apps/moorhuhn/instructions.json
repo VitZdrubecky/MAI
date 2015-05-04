@@ -5,7 +5,7 @@
 	"height": 338,
 	"resize": "free",
 	"dependencies": [
-		"scripts/createjs-2013.12.12.min.js",
+		"scripts/createjs-2014.12.12.min.js",
 		"scripts/sprites-config.js"
 	],
 	"title": "Moorhuhn",

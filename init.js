@@ -88,7 +88,7 @@ function handleBackgroundImageLoad() {
     //backgroundImage.scaleX = 1.0;
     //backgroundImage.scaleY = 1.0;
     background.set({alpha: 0.85});
-    background.cache(0, 0, WIDTH, HEIGHT /*[, possibleScale]*/);
+    background.cache(0, 0, 600, 338 /*[, possibleScale]*/);
     stage.addChildAt(background);
 }
 
